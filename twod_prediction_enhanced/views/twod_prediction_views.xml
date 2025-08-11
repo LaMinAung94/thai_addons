@@ -1,0 +1,168 @@
+<odoo>
+    <!-- ===================== HISTORY ===================== -->
+    <record id="view_twod_history_tree" model="ir.ui.view">
+        <field name="name">twod.history.tree</field>
+        <field name="model">twod.history</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="time"/>
+                <field name="value"/>
+                <field name="set_number"/>
+                <field name="twod_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_twod_history_form" model="ir.ui.view">
+        <field name="name">twod.history.form</field>
+        <field name="model">twod.history</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="date"/>
+                        <field name="time"/>
+                        <field name="value"/>
+                        <field name="set_number"/>
+                        <field name="twod_number"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_twod_history" model="ir.actions.act_window">
+      <field name="name">History</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">twod.history</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">Create!</p>
+      </field>
+    </record>
+
+
+    <!-- ===================== LIVE ===================== -->
+    <record id="view_twod_live_tree" model="ir.ui.view">
+        <field name="name">twod.live.tree</field>
+        <field name="model">twod.live</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="fetch_time"/>
+                <field name="value"/>
+                <field name="set_number"/>
+                <field name="twod_number"/>
+                <field name="stock_date"/>
+                <field name="stock_datetime"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_twod_live_form" model="ir.ui.view">
+        <field name="name">twod.live.form</field>
+        <field name="model">twod.live</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="fetch_time"/>
+                        <field name="value"/>
+                        <field name="set_number"/>
+                        <field name="twod_number"/>
+                        <field name="stock_date"/>
+                        <field name="stock_datetime"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_twod_live" model="ir.actions.act_window">
+      <field name="name">Live</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">twod.live</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">Create!</p>
+      </field>
+    </record>
+
+    <!-- ===================== PREDICTION ===================== -->
+    <record id="view_twod_prediction_tree" model="ir.ui.view">
+        <field name="name">twod.prediction.tree</field>
+        <field name="model">twod.prediction</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="prediction_time"/>
+                <field name="target_time"/>
+                <field name="value"/>
+                <field name="set_number"/>
+                <field name="twod_number"/>
+                <field name="mae"/>
+                <field name="rmse"/>
+                <field name="r2"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_twod_prediction_form" model="ir.ui.view">
+        <field name="name">twod.prediction.form</field>
+        <field name="model">twod.prediction</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="prediction_time"/>
+                        <field name="target_time"/>
+                        <field name="value"/>
+                        <field name="set_number"/>
+                        <field name="twod_number"/>
+                    </group>
+                    <group string="Accuracy">
+                        <field name="mae"/>
+                        <field name="mse"/>
+                        <field name="rmse"/>
+                        <field name="r2"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_twod_prediction" model="ir.actions.act_window">
+      <field name="name">Prediction</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">twod.prediction</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">Create!</p>
+      </field>
+    </record>
+
+
+    <!-- ===================== MODEL CONFIG ===================== -->
+    <record id="view_twod_model_config_form" model="ir.ui.view">
+        <field name="name">twod.model.config.form</field>
+        <field name="model">twod.model.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="model_type"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_twod_model_config" model="ir.actions.act_window">
+      <field name="name">Model Config</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">twod.model.config</field>
+      <field name="view_mode">form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">Create!</p>
+      </field>
+    </record>
+</odoo>

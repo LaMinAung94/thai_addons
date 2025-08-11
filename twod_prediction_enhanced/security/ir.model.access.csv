@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_twod_history,access.twod.history,model_twod_history,base.group_user,1,1,1,1
+access_twod_live,access.twod.live,model_twod_live,base.group_user,1,1,1,1
+access_twod_prediction,access.twod.prediction,model_twod_prediction,base.group_user,1,1,1,1
+access_twod_model_config,access.twod.model.config,model_twod_model_config,base.group_user,1,1,1,1

@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <!-- Menu Root -->
+        <menuitem id="twod_prediction_enhanced.menu_twod_root" name="2D Prediction" parent="sale.menu_sale_config" sequence="99"/>
+
+        <!-- History Menu -->
+        <menuitem id="menu_twod_history" name="History" parent="menu_twod_root" action="action_twod_history" sequence="1" />
+
+        <!-- Live Menu -->
+        <menuitem id="menu_twod_live" name="Live" parent="menu_twod_root" action="action_twod_live" sequence="2" />
+
+        <!-- Prediction Menu -->
+        <menuitem id="menu_twod_prediction" name="Prediction" parent="menu_twod_root" action="action_twod_prediction" sequence="3"/>
+
+        <!-- Model Config Menu -->
+        <menuitem id="menu_twod_model_config" name="Model Config" parent="menu_twod_root" action="action_twod_model_config" sequence="4"/>
+    </data>
+
+</odoo>

@@ -1,0 +1,10 @@
+<odoo>
+  <data>
+    <template id="assets_backend_inherit" inherit_id="web.assets_backend" name="2D Prediction Assets">
+      <xpath expr="." position="inside">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css"/>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      </xpath>
+    </template>
+  </data>
+</odoo>
