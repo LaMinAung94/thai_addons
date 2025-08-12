@@ -46,8 +46,7 @@ class TwoDPredictionService(models.TransientModel):
             })
             return {}
 
-    api.model
-
+    @api.model
     def update_history_data(self):
         data = self.fetch_history()
         for day in data:
@@ -71,6 +70,10 @@ class TwoDPredictionService(models.TransientModel):
 
     @api.model
     def update_live_data(self):
+        today_weekday = datetime.today().weekday()
+        if today_weekday >= 5:  # Saturday (5) and Sunday (6)
+            _logger.info("update_live_data skipped on weekend")
+            return
         response = self.fetch_live()
         if not response or 'live' not in response:
             return
@@ -123,25 +126,23 @@ class TwoDPredictionService(models.TransientModel):
         return model.predict([live])[0]
 
     @api.model
-    def predict_twod_for_today_12_01(self):
+    def predict_twod(self, model_type='linear', target_time_value=None, cutoff_time_value=None):
         today = date.today()
-        target_time = datetime.combine(today, time(12, 1))
+        target_time = datetime.combine(today, target_time_value or time(12, 1))
 
-        # Get all history from today (already available before 10:30)
-        history = self.env['twod.live'].search([
-            ('stock_date', '=', today)
-        ], order='stock_datetime desc')
+        domain = [('stock_date', '=', today)]
+        if cutoff_time_value:
+            cutoff_datetime = datetime.combine(today, cutoff_time_value)
+            domain.append(('stock_datetime', '<=', cutoff_datetime))
 
-        # Latest record of today
-        live = self.env['twod.live'].search([
-            ('stock_date', '=', today)
-        ], order='stock_datetime desc', limit=1)
+        history = self.env['twod.live'].search(domain, order='stock_datetime desc')
+
+        live = self.env['twod.live'].search(domain, order='stock_datetime desc', limit=1)
 
         if not history or not live:
-            _logger.warning("No history or live data for today")
+            _logger.warning(f"No history or live data before cutoff - {model_type} - {target_time}")
             return
 
-        # Prepare history data
         history_data = [{
             'value': float(h.value.replace(',', '')) if isinstance(h.value, str) else h.value,
             'set_number': float(h.set_number.replace(',', '')) if isinstance(h.set_number, str) else h.set_number,
@@ -151,14 +152,11 @@ class TwoDPredictionService(models.TransientModel):
         X = self._prepare_features(history_data)
         y = np.array([h['twod_number'] for h in history_data])
 
-        # Live feature from most recent record
         live_features = [
             float(live.value.replace(',', '')) if isinstance(live.value, str) else live.value,
             float(live.set_number.replace(',', '')) if isinstance(live.set_number, str) else live.set_number,
             int(live.twod_number) if isinstance(live.twod_number, str) else live.twod_number,
         ]
-
-        model_type = self.env['twod.model.config'].search([], limit=1).model_type or 'linear'
 
         if model_type == 'poly':
             prediction = self.poly_model(X, y, live_features)
@@ -178,7 +176,9 @@ class TwoDPredictionService(models.TransientModel):
             'mse': mse,
             'rmse': rmse,
             'r2': r2,
+            'model_type': model_type
         })
+
     # Cron methods
     @api.model
     def cron_update_history_data(self):
@@ -189,5 +189,19 @@ class TwoDPredictionService(models.TransientModel):
         self.update_live_data()
 
     @api.model
-    def cron_predict_twod(self):
-        self.predict_twod_for_today_12_01()
+    def cron_predict_all_models(self):
+        model_types = ['linear', 'poly', 'xgboost']
+        target_times_with_cutoff = [
+            (time(12, 1),time(10, 30)),
+            (time(16, 30),time(14, 0)),
+        ]
+        for t_time, cutoff in target_times_with_cutoff:
+            for m_type in model_types:
+                try:
+                    self.predict_twod(m_type, t_time, cutoff)
+                    _logger.info(f"Prediction done for model: {m_type} at {t_time} with cutoff {cutoff}")
+                except Exception as e:
+                    _logger.error(f"Error in prediction with {m_type} at {t_time}: {e}")
+
+
+

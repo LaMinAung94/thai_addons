@@ -13,9 +13,9 @@
             <field name="model_id" ref="model_twod_prediction_service"/>
             <field name="state">code</field>
             <field name="code">model.cron_update_history_data()</field>
-            <field name="interval_number">60</field> <!-- every 60 minutes -->
-            <field name="interval_type">minutes</field>
-            <field name="numbercall">-1</field> <!-- repeat forever -->
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
             <field name="active" eval="True"/>
         </record>
 
@@ -25,7 +25,7 @@
             <field name="model_id" ref="model_twod_prediction_service"/>
             <field name="state">code</field>
             <field name="code">model.cron_update_live_data()</field>
-            <field name="interval_number">1</field> <!-- every 30 minutes -->
+            <field name="interval_number">1</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
             <field name="active" eval="True"/>
@@ -33,14 +33,13 @@
 
         <!-- Cron to predict 2D -->
         <record id="ir_cron_predict_twod" model="ir.cron">
-            <field name="name">Predict 2D Numbers</field>
+            <field name="name">Predict 2D for All Models (12:01 and 14:00)</field>
             <field name="model_id" ref="model_twod_prediction_service"/>
             <field name="state">code</field>
-            <field name="code">model.cron_predict_twod()</field>
+            <field name="code">model.cron_predict_all_models()</field>
             <field name="interval_number">1</field>
-            <field name="interval_type">days</field>
+            <field name="interval_type">hours</field>
             <field name="numbercall">-1</field>
-            <field name="nextcall">2025-08-09 10:30:00</field> <!-- change as needed -->
             <field name="doall" eval="False"/>
             <field name="active" eval="True"/>
         </record>
