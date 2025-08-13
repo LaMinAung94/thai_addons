@@ -176,7 +176,6 @@ class TwoDPredictionService(models.TransientModel):
             'mse': mse,
             'rmse': rmse,
             'r2': r2,
-            'model_type': model_type
         })
 
     # Cron methods
